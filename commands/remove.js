@@ -6,7 +6,7 @@ module.exports = {
     aliases: ['rm'],
     guildOnly: true,
 	cooldown: 3,
-	async execute(message) {
+	async execute(message, args) {
 
         try {
 
@@ -16,7 +16,7 @@ module.exports = {
 
 			userQueue.songs.splice(userQueue['location'], 1)
 
-      userQueue.connection.dispatcher.end()
+      		userQueue.connection.dispatcher.end()
 
 			userQueue.location = userQueue.location - 1
 
@@ -40,7 +40,7 @@ module.exports = {
 
 		message.channel.send(noRemove)
 
-	} catch {
+	} catch (err) {
 
 		const Unavaliable = new MessageEmbed()
 		.setTitle('Something Happened.')

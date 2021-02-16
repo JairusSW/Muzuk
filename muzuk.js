@@ -1,10 +1,8 @@
 require('dotenv').config()
 
-const ytdl = require('./util/ytdlDiscord')
-
-const getStream = require('get-stream')
-
 const chalk = require('chalk')
+
+const formatNumber = require('./util/formatViews')
 
 const ms = require('ms')
 
@@ -20,7 +18,7 @@ const needle = require('needle')
 
 const { Collection, MessageEmbed, MessageAttachment } = require('discord.js')
 
-const client = new MusicClient({ token: process.env.DISCORD_TOKEN, prefix: process.env.DISCORD_PREFIX, id: process.env.DISCORD_ID })
+const client = new MusicClient()
 
 const commandFiles = readdirSync(join(__dirname, 'commands')).filter(file => file.endsWith('.js'))
 
@@ -40,7 +38,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
 
 			await reaction.fetch()
 
-		} catch {
+		} catch (err) {
 			
 		}
 	}
@@ -63,7 +61,6 @@ client.on('messageReactionAdd', async (reaction, user) => {
 
 					if (userQueue.playing === false) {
 						
-						console.log('resume')
 						userQueue.connection.dispatcher.resume()
 
 						userQueue.playing = true
@@ -105,7 +102,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
 					.addField(`Loop`, `${userQueue.loop ? 'On' : 'Off'}`)
 					.addField(`Shuffle`, `${userQueue.shuffle ? 'On' : 'Off'}`)
 					.addField(`Volume`, `${userQueue.volume * 10}`)
-          .addField(`Position `, `[${songLength((Date.now() - userQueue.current) / 1000)}/${songLength(song.length)}]`)
+          			.addField(`Position `, `[${songLength((Date.now() - userQueue.current) / 1000)}/${songLength(song.length)}]`)
 					.setThumbnail(`${song.thumbnail}`)
 					.setColor('#31A5A5')
 					.setFooter(`----------------------------------------------------------------------------------------------`)
@@ -117,8 +114,6 @@ client.on('messageReactionAdd', async (reaction, user) => {
 
 				if (reaction.emoji.name === '⏩') {
 
-					console.log('Skip!')
-
 					userQueue.connection.dispatcher.end()
 
 					song = userQueue.songs[userQueue.location]
@@ -129,7 +124,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
 					.addField(`Loop`, `${userQueue.loop ? 'On' : 'Off'}`)
 					.addField(`Shuffle`, `${userQueue.shuffle ? 'On' : 'Off'}`)
 					.addField(`Volume`, `${userQueue.volume * 10}`)
-          .addField(`Position `, `[${songLength((Date.now() - userQueue.current) / 1000)}/${songLength(song.length)}]`)
+          			.addField(`Position `, `[${songLength((Date.now() - userQueue.current) / 1000)}/${songLength(song.length)}]`)
 					.setThumbnail(`${song.thumbnail}`)
 					.setColor('#31A5A5')
 					.setFooter(`----------------------------------------------------------------------------------------------`)
@@ -139,8 +134,6 @@ client.on('messageReactionAdd', async (reaction, user) => {
 				}
 
 				if (reaction.emoji.name === '⏪') {
-
-					console.log('Back!')
 
 					userQueue.location = userQueue.location - 2
 
@@ -154,7 +147,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
 					.addField(`Loop`, `${userQueue.loop ? 'On' : 'Off'}`)
 					.addField(`Shuffle`, `${userQueue.shuffle ? 'On' : 'Off'}`)
 					.addField(`Volume`, `${userQueue.volume * 10}`)
-          .addField(`Position `, `[${songLength((Date.now() - userQueue.current) / 1000)}/${songLength(song.length)}]`)
+          			.addField(`Position `, `[${songLength((Date.now() - userQueue.current) / 1000)}/${songLength(song.length)}]`)
 					.setThumbnail(`${song.thumbnail}`)
 					.setColor('#31A5A5')
 					.setFooter(`----------------------------------------------------------------------------------------------`)
@@ -164,8 +157,6 @@ client.on('messageReactionAdd', async (reaction, user) => {
 				}
 
 				if (reaction.emoji.name === '🔄') {
-
-					console.log('Loop!')
 
 					userQueue.loop ? userQueue.loop = false : userQueue.loop = true
 
@@ -177,7 +168,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
 					.addField(`Loop`, `${userQueue.loop ? 'On' : 'Off'}`)
 					.addField(`Shuffle`, `${userQueue.shuffle ? 'On' : 'Off'}`)
 					.addField(`Volume`, `${userQueue.volume * 10}`)
-          .addField(`Position `, `[${songLength((Date.now() - userQueue.current) / 1000)}/${songLength(song.length)}]`)
+          			.addField(`Position `, `[${songLength((Date.now() - userQueue.current) / 1000)}/${songLength(song.length)}]`)
 					.setThumbnail(`${song.thumbnail}`)
 					.setColor('#31A5A5')
 					.setFooter(`----------------------------------------------------------------------------------------------`)
@@ -187,8 +178,6 @@ client.on('messageReactionAdd', async (reaction, user) => {
 				}
 
 				if (reaction.emoji.name === '🔀') {
-
-					console.log('Shuffle!')
 
 					userQueue.shuffle ? userQueue.shuffle = false : userQueue.shuffle = true
 
@@ -200,7 +189,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
 					.addField(`Loop`, `${userQueue.loop ? 'On' : 'Off'}`)
 					.addField(`Shuffle`, `${userQueue.shuffle ? 'On' : 'Off'}`)
 					.addField(`Volume`, `${userQueue.volume * 10}`)
-          .addField(`Position `, `[${songLength((Date.now() - userQueue.current) / 1000)}/${songLength(song.length)}]`)
+          			.addField(`Position `, `[${songLength((Date.now() - userQueue.current) / 1000)}/${songLength(song.length)}]`)
 					.setThumbnail(`${song.thumbnail}`)
 					.setColor('#31A5A5')
 					.setFooter(`----------------------------------------------------------------------------------------------`)
@@ -209,8 +198,6 @@ client.on('messageReactionAdd', async (reaction, user) => {
 				}
 
 				if (reaction.emoji.name === '🔊') {
-
-					console.log('Volume Up!')
 
 					userQueue.volume = userQueue.volume + 1
 
@@ -224,7 +211,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
 					.addField(`Loop`, `${userQueue.loop ? 'On' : 'Off'}`)
 					.addField(`Shuffle`, `${userQueue.shuffle ? 'On' : 'Off'}`)
 					.addField(`Volume`, `${userQueue.volume * 10}`)
-          .addField(`Position `, `[${songLength((Date.now() - userQueue.current) / 1000)}/${songLength(song.length)}]`)
+          			.addField(`Position `, `[${songLength((Date.now() - userQueue.current) / 1000)}/${songLength(song.length)}]`)
 					.setThumbnail(`${song.thumbnail}`)
 					.setColor('#31A5A5')
 					.setFooter(`----------------------------------------------------------------------------------------------`)
@@ -234,8 +221,6 @@ client.on('messageReactionAdd', async (reaction, user) => {
 				}
 
 				if (reaction.emoji.name === '🔉') {
-
-					console.log('Volume Down!')
 
 					userQueue.volume = userQueue.volume - 1
 
@@ -249,7 +234,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
 					.addField(`Loop`, `${userQueue.loop ? 'On' : 'Off'}`)
 					.addField(`Shuffle`, `${userQueue.shuffle ? 'On' : 'Off'}`)
 					.addField(`Volume`, `${userQueue.volume * 10}`)
-          .addField(`Position `, `[${songLength((Date.now() - userQueue.current) / 1000)}/${songLength(song.length)}]`)
+          			.addField(`Position `, `[${songLength((Date.now() - userQueue.current) / 1000)}/${songLength(song.length)}]`)
 					.setThumbnail(`${song.thumbnail}`)
 					.setColor('#31A5A5')
 					.setFooter(`----------------------------------------------------------------------------------------------`)
@@ -259,8 +244,6 @@ client.on('messageReactionAdd', async (reaction, user) => {
 				}
 
 				if (reaction.emoji.name === '🔈') {
-
-					console.log('Volume Off!')
 
 					if (userQueue.mute === true) {
 
@@ -286,7 +269,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
 					.addField(`Loop`, `${userQueue.loop ? 'On' : 'Off'}`)
 					.addField(`Shuffle`, `${userQueue.shuffle ? 'On' : 'Off'}`)
 					.addField(`Volume`, `${userQueue.volume * 10}`)
-          .addField(`Position `, `[${songLength((Date.now() - userQueue.current) / 1000)}/${songLength(song.length)}]`)
+          			.addField(`Position `, `[${songLength((Date.now() - userQueue.current) / 1000)}/${songLength(song.length)}]`)
 					.setThumbnail(`${song.thumbnail}`)
 					.setColor('#31A5A5')
 					.setFooter(`----------------------------------------------------------------------------------------------`)
@@ -301,19 +284,35 @@ client.on('messageReactionAdd', async (reaction, user) => {
 
 						const current = userQueue.songs[userQueue['location']]
 
+						const maxMinutes = 5
+
+						if (current.seconds > maxMinutes * 60) {
+		
+							const tooLong = new MessageEmbed()
+							.setTitle(`Song Is Too Long. Please Keep It Below ${maxMinutes} Minutes.`)
+							.setColor('#31A5A5')
+							.setTimestamp()
+							.setFooter(reaction.message.author.username)
+		
+							await reaction.message.channel.send(tooLong)
+		
+							return
+		
+						}
+
 						const link = (await needle('get', `https://ytdl.jairussw.repl.co/download?url=${current.url}/`)).body
 
 						if (link === '401') {
 							
-								const noSongi = new MessageEmbed()
-								.setTitle('Song Unavaliable')
-								.setColor('#31A5A5')
-								.setTimestamp()
-								.setFooter(message.author.username)
+							const noSongi = new MessageEmbed()
+							.setTitle('Song Unavaliable')
+							.setColor('#31A5A5')
+							.setTimestamp()
+							.setFooter(reaction.message.author.username)
 
-								message.channel.send(noSongi)
+							message.channel.send(noSongi)
 
-								return
+							return
 
 						}
 						
@@ -324,7 +323,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
 						return
 
 					} catch (err) {
-			
+
 						console.log(err)
 			
 						const Unavaliable = new MessageEmbed()
@@ -337,13 +336,15 @@ client.on('messageReactionAdd', async (reaction, user) => {
 			
 					}
 
+					song = userQueue.songs[userQueue.location]
+
 					controlPanelEdit = new MessageEmbed()
 					.setTitle(`Song Dashboard`)
 					.addField(`Pause`, `${userQueue.playing ? 'Off' : 'On'}`)
 					.addField(`Loop`, `${userQueue.loop ? 'On' : 'Off'}`)
 					.addField(`Shuffle`, `${userQueue.shuffle ? 'On' : 'Off'}`)
 					.addField(`Volume`, `${userQueue.volume * 10}`)
-          .addField(`Position `, `[${songLength((Date.now() - userQueue.current) / 1000)}/${songLength(song.length)}]`)
+          			.addField(`Position `, `[${songLength((Date.now() - userQueue.current) / 1000)}/${songLength(song.length)}]`)
 					.setThumbnail(`${song.thumbnail}`)
 					.setColor('#31A5A5')
 					.setFooter(`----------------------------------------------------------------------------------------------`)
@@ -361,14 +362,16 @@ client.on('messageReactionAdd', async (reaction, user) => {
 })
 
 client.once('ready', () => {
-	
-	console.log(chalk.bold.blue(`Status: Connected`))
 
 	console.log(chalk.bold.blue(`Username: ${client.user.tag}`))
 
-	client.user.setActivity('Muzuk', { type: 'LISTENING' })
+	console.log(chalk.bold.blue(`Servers: ${formatNumber(client.guilds.cache.size)}`))
 
-	client.user.setStatus('online')
+	console.log(chalk.bold.blue(`Users: ${formatNumber(client.guilds.cache.reduce((a, g) => a + g.memberCount, 0))}`))
+
+	console.log(chalk.bold.blue(`Channels: ${formatNumber(client.channels.cache.size)}`))
+
+	client.user.setActivity('Muzuk', { type: 'LISTENING' })
 
 })
 
@@ -378,7 +381,7 @@ client.on('message', message => {
 
 	if (message.author.bot) return
 
-	const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${escapeRegex(client.config.prefix)})\\s*`)
+	const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${escapeRegex(client.prefix)})\\s*`)
 
 	if (!prefixRegex.test(message.content)) return
 
@@ -386,9 +389,7 @@ client.on('message', message => {
 
 	matchedPrefix = matchedPrefix.trim()
 
-	const prefixes = [client.config.prefix, `<@!${client.config.id}>`]
-
-	console.log('matched: ', matchedPrefix, prefixes.includes(matchedPrefix), `<@!${client.config.id}>`)
+	const prefixes = [client.prefix, `<@!${client.user.id}>`]
 
 	if (prefixes.includes(matchedPrefix) === false) return
 
@@ -470,9 +471,7 @@ client.on('message', message => {
 
 		command.execute(message, args)
 
-	} catch (error) {
-
-		console.error(error)
+	} catch (err) {
 
 		const errorMessage = new MessageEmbed()
 		.setTitle(`Something Happened. Try Again.`)

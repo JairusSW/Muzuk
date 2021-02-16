@@ -6,7 +6,7 @@ module.exports = {
 	aliases: ['bk'],
   cooldown: 3,
   guildOnly: true,
-	execute(message) {
+	async execute(message, args) {
 
 	try {
 
@@ -54,7 +54,7 @@ module.exports = {
 
 		message.channel.send(Skip)
 
-	} catch {
+	} catch (err) {
 
 				const Unavaliable = new MessageEmbed()
 		.setTitle('Something Happened.')

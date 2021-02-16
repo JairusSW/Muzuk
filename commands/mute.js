@@ -6,7 +6,7 @@ module.exports = {
 	aliases: ['mt', 'm'],
 	guildOnly: true,
 	cooldown: 5,
-	execute(message, args) {
+	async execute(message, args) {
 
 try {
 
@@ -80,7 +80,7 @@ try {
 
         return		
 
-					} catch {
+					} catch (err) {
 
 				const Unavaliable = new MessageEmbed()
 		.setTitle('Something Happened.')

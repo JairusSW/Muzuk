@@ -6,15 +6,13 @@ module.exports = {
 	aliases: ['ps'],
 	guildOnly: true,
 	cooldown: 3,
-	execute(message) {
+	async execute(message, args) {
 
-try {
+	try {
 
 		const userQueue = message.client.queue.get(message.author.id)
 
 		if (userQueue && userQueue.playing === true) {
-
-			console.log('pausing')
 
 			userQueue.connection.dispatcher.pause()
 			
@@ -40,7 +38,7 @@ try {
 
 		message.channel.send(noPause)
 
-	} catch {
+	} catch (err) {
 
 		const Unavaliable = new MessageEmbed()
 		.setTitle('Something Happened.')

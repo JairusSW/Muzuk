@@ -8,10 +8,6 @@ const isCode = require('../util/isCode')
 
 const nameToCode = require('../util/nameToCode')
 
-const codeToName = require('../util/codeToName')
-
-//const codeToQueue = require('../util/codeToQueue')
-
 module.exports = {
 	name: 'view-playlist',
 	description: 'View Playlist From User Playlists.',
@@ -20,7 +16,7 @@ module.exports = {
 	cooldown: 3,
 	async execute(message, args) {
 
-try {
+	try {
 
 		const user = message.client.userDatabase
 
@@ -44,13 +40,9 @@ try {
 
 			if (!isCode(code)) code = await nameToCode(code.toLowerCase(), musicData)
 
-			console.log(code)
-
 			code = code.toLowerCase()
 
 			const queueData = await musicData.get(code)
-
-			const queueSongs = queueData['songs']
 
 			const queueImage = queueData['image']
 
@@ -101,8 +93,6 @@ try {
 
 		} catch (err) {
 
-			console.log(err)
-
 			const PlaylistKill = new MessageEmbed()
 			.setTitle(`Could Not Find Playlist`)
 			.setColor('#31A5A5')
@@ -115,9 +105,9 @@ try {
 
 		}
 			
-				} catch {
+		} catch (err) {
 
-				const Unavaliable = new MessageEmbed()
+		const Unavaliable = new MessageEmbed()
 		.setTitle('Something Happened.')
 		.setColor('#31A5A5')
 		.setTimestamp()

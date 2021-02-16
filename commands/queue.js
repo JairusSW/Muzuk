@@ -6,11 +6,9 @@ module.exports = {
 	aliases: ['qu', 'q'],
 	guildOnly: true,
 	cooldown: 3,
-	execute(message) {
+	async execute(message, args) {
 
-try {
-
-		console.log('queue!!!')
+	try {	
 
 		const userQueue = message.client.queue.get(message.author.id)
 
@@ -38,8 +36,6 @@ try {
 
 		for (const song of userQueue.songs) {
 
-			console.log(song)
-
 			if (index === userQueue.location) {
 
 				Queue.addField(`**${index + 1}. **`, `**${song.shortTitle}**`)
@@ -58,9 +54,9 @@ try {
 
 		message.channel.send(Queue)
 
-	} catch {
+	} catch (err) {
 
-				const Unavaliable = new MessageEmbed()
+		const Unavaliable = new MessageEmbed()
 		.setTitle('Something Happened.')
 		.setColor('#31A5A5')
 		.setTimestamp()

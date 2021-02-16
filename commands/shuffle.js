@@ -6,9 +6,9 @@ module.exports = {
     aliases: ['sf'],
     guildOnly: true,
 	cooldown: 3,
-	execute(message) {
+	async execute(message, args) {
 
-try {
+    try {
 
         const userQueue = message.client.queue.get(message.author.id)
         
@@ -57,9 +57,9 @@ try {
             
         }        
 		
-			} catch {
+		} catch (err) {
 
-				const Unavaliable = new MessageEmbed()
+		const Unavaliable = new MessageEmbed()
 		.setTitle('Something Happened.')
 		.setColor('#31A5A5')
 		.setTimestamp()

@@ -6,9 +6,9 @@ module.exports = {
 	aliases: ['st', 'sp'],
 	guildOnly: true,
 	cooldown: 5,
-	async execute(message) {
+	async execute(message, args) {
 
-try {
+	try {
 
 		const { channel } = message.member.voice
 
@@ -56,17 +56,17 @@ try {
 
 		message.channel.send(Stop)
 
-	} catch {
+		} catch (err) {
 
-				const Unavaliable = new MessageEmbed()
-		.setTitle('Something Happened.')
-		.setColor('#31A5A5')
-		.setTimestamp()
-		.setFooter(message.author.username)
+			const Unavaliable = new MessageEmbed()
+			.setTitle('Something Happened.')
+			.setColor('#31A5A5')
+			.setTimestamp()
+			.setFooter(message.author.username)
 
-		message.channel.send(Unavaliable)
+			message.channel.send(Unavaliable)
 
-	}
+		}
 	
 	}
 

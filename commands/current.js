@@ -9,7 +9,7 @@ module.exports = {
 	description: 'Display The Current Song',
 	cooldown: 3,
 	guildOnly: true,
-	execute(message) {
+	async execute(message, args) {
 		
 		try {
 
@@ -52,7 +52,7 @@ module.exports = {
 
 		return
 
-			} catch {
+			} catch (err) {
 
 				const Unavaliable = new MessageEmbed()
 		.setTitle('Something Happened.')

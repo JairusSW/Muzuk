@@ -10,7 +10,7 @@ module.exports = {
 	cooldown: 5,
 	async execute(message, args) {
 
-try {
+	try {
 
 		const title = args.join('').toLowerCase()
 
@@ -56,7 +56,7 @@ try {
 
 					message.channel.send(lyrics)
 
-        } catch {
+        } catch (err) {
 
             const LyricsErr = new MessageEmbed()
             .setTitle('Lyrics Unavaliable.')
@@ -72,9 +72,9 @@ try {
 
         return		
 
-	} catch {
+	} catch (err) {
 
-				const Unavaliable = new MessageEmbed()
+		const Unavaliable = new MessageEmbed()
 		.setTitle('Something Happened.')
 		.setColor('#31A5A5')
 		.setTimestamp()

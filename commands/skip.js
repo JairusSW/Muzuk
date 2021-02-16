@@ -6,9 +6,9 @@ module.exports = {
 	aliases: ['sk'],
 	guildOnly: true,
 	cooldown: 3,
-	execute(message) {
+	async execute(message, args) {
 
-try {
+	try {
 
 		const { channel } = message.member.voice
 
@@ -52,9 +52,9 @@ try {
 
 		message.channel.send(Skip)
 
-	} catch {
+	} catch (err) {
 
-				const Unavaliable = new MessageEmbed()
+		const Unavaliable = new MessageEmbed()
 		.setTitle('Something Happened.')
 		.setColor('#31A5A5')
 		.setTimestamp()

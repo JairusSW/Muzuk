@@ -1,20 +1,16 @@
 const { MessageEmbed } = require('discord.js')
 
-const songLength = require('../util/songLength')
-
-const formatViews = require('../util/formatViews')
-
 module.exports = {
 	name: 'invite',
 	description: 'Send Bot Invite Link',
 	cooldown: 3,
 	guildOnly: true,
-	execute(message) {
+	async execute(message, args) {
 		
 		try {
 
 			const Invite = new MessageEmbed()
-			.setTitle(`https://discord.com/oauth2/authorize?client_id=${message.client.config.id}&scope=bot&permissions=66113344`)
+			.setTitle(`https://discord.com/oauth2/authorize?client_id=${message.client.user.id}&scope=bot&permissions=66113344`)
 			.setColor('#31A5A5')
 			.setTimestamp()
 			.setFooter(message.author.username)
@@ -22,7 +18,7 @@ module.exports = {
 			message.channel.send(Invite)
 
 
-		} catch {
+		} catch (err) {
 
 			const Unavaliable = new MessageEmbed()
 			.setTitle('Something Happened.')

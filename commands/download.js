@@ -13,7 +13,7 @@ const ytdl = require('ytdl-core')
 module.exports = {
 	name: 'download',
 	description: 'Download Current Song Or URL',
-	cooldown: 2,//ms('5m') / 1000,
+	cooldown: ms('5m') / 1000,
 	aliases: ['dl', 'mp3'],
 	guildOnly: true,
 	async execute(message, args) {
@@ -48,6 +48,22 @@ module.exports = {
 
 				title = song.title
 
+				const maxMinutes = 5
+
+				if (song.seconds >= maxMinutes * 60) {
+
+					const long = new MessageEmbed()
+					.setTitle(`Song Is Too Long. Please Keep It Below ${maxMinutes} Minutes.`)
+					.setColor('#31A5A5')
+					.setTimestamp()
+					.setFooter(message.author.username)
+
+					message.channel.send(long)
+
+					return
+
+				}
+
 				const link = (await needle('get', `https://ytdl.jairussw.repl.co/download?url=${url}/`)).body
 
 				if (link === '401') {
@@ -76,19 +92,35 @@ module.exports = {
 
 				const query = await ytdl.getBasicInfo(args[0].replace(/<(.+)>/g, '$1'))
 
+				const maxMinutes = 5
+
+				if (parseInt(query.videoDetails.lengthSeconds) >= maxMinutes * 60) {
+
+					const long = new MessageEmbed()
+					.setTitle(`Song Is Too Long. Please Keep It Below ${maxMinutes} Minutes.`)
+					.setColor('#31A5A5')
+					.setTimestamp()
+					.setFooter(message.author.username)
+
+					message.channel.send(long)
+
+					return
+
+				}
+
 				const link = (await needle('get', `https://ytdl.jairussw.repl.co/download?url=${url}/`)).body
 
 				if (link === '401') {
 					
-						const noSong = new MessageEmbed()
-						.setTitle('Song Unavaliable')
-						.setColor('#31A5A5')
-						.setTimestamp()
-						.setFooter(message.author.username)
+					const noSong = new MessageEmbed()
+					.setTitle('Song Unavaliable')
+					.setColor('#31A5A5')
+					.setTimestamp()
+					.setFooter(message.author.username)
 
-						message.channel.send(noSong)
+					message.channel.send(noSong)
 
-						return
+					return
 
 				}
 				
@@ -101,8 +133,6 @@ module.exports = {
 			}
 	
 		} catch (err) {
-
-			console.log(err)
 
 			const Unavaliable = new MessageEmbed()
 			.setTitle('Song Unavaliable')

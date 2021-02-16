@@ -87,8 +87,6 @@ module.exports = {
 			userPlaylists.push(shareCode)
 			//==> Push Code To User Playlists
 
-			console.log('shareCode: ', shareCode)
-
 			await user.set(message.author.id, userData)
 
 			const Playlist = new MessageEmbed()
@@ -117,8 +115,6 @@ module.exports = {
 
 		} catch (err) {
 
-			console.log(err)
-
 			const PlaylistKill = new MessageEmbed()
 			.setTitle(`No Response. Cancelling.`)
 			.setColor('#31A5A5')
@@ -131,9 +127,9 @@ module.exports = {
 
 		}
 
-			} catch {
+	} catch (err) {
 
-				const Unavaliable = new MessageEmbed()
+		const Unavaliable = new MessageEmbed()
 		.setTitle('Something Happened.')
 		.setColor('#31A5A5')
 		.setTimestamp()

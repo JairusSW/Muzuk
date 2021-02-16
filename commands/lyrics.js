@@ -76,7 +76,7 @@ try {
 
 					message.channel.send(lyrics)
 
-        } catch {
+        } catch (err) {
 
             const LyricsErr = new MessageEmbed()
             .setTitle('Lyrics Unavaliable.')
@@ -92,7 +92,7 @@ try {
 
         return		
 
-	} catch {
+	} catch (err) {
 
 				const Unavaliable = new MessageEmbed()
 		.setTitle('Something Happened.')

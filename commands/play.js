@@ -6,8 +6,6 @@ const ytdl = require('ytdl-core')
 
 const ytdlOpus = require('ytdl-core-discord')
 
-const youtubeAPI = require('../util/youtubeAPI')
-
 const songLength = require('../util/songLength')
 
 const formatViews = require('../util/formatViews')
@@ -55,9 +53,7 @@ module.exports = {
 			})
 
 		}
-
-		const Youtube = youtubeAPI(message.client.youtubeKeys)
-
+		
 		const { channel } = message.member.voice
 
 		if (!channel) {
@@ -81,7 +77,7 @@ module.exports = {
 
 				await channel.setUserLimit(channel.userLimit + 1)
 
-			} catch {
+			} catch (err) {
 
 				const full_channel = new MessageEmbed()
 				.setTitle('Channel Is Full. Select A Different Channel.')
@@ -139,8 +135,6 @@ module.exports = {
 				
 			// Youtube Playlist
 
-			console.log(getPlaylistID(args[0]))
-
 			if (getPlaylistID(args[0])) {
 
 				// Youtube Playlist
@@ -152,8 +146,6 @@ module.exports = {
 				song = []
 
 				for (const item of query['items']) {
-
-					console.log(item.url)
 
 					song.push({
 						id: item['id'],
@@ -168,11 +160,7 @@ module.exports = {
 						bitrate: channel.bitrate
 					})
 
-					console.log(item)
-
 				}
-
-				console.log('Loading Youtube Playlist')
 
 			} else if (ytdl.validateID(args[0].trim())) {
 
@@ -228,86 +216,28 @@ module.exports = {
 
 			} else {
 
-				// API Search
-
-				/*playlist = false
-
-				const data = await Youtube.searchVideos(args.join(' ').trim(), 1)
-
-				const query = await ytdl.getBasicInfo(`https://youtube.com/watch?v=${data[0]['id']}`)
-
-				song = {
-					id: query['videoDetails'].videoId,
-					url: query['videoDetails'].video_url,
-					title: Util.escapeMarkdown(query['videoDetails'].title),
-					thumbnail: queryAPI['videoDetails'].thumbnails[3].url,
-					length: query['videoDetails'].lengthSeconds,
-					seconds: parseInt(query['videoDetails'].lengthSeconds),
-					views: query['videoDetails'].viewCount,
-					shortTitle: shortenTitle(Util.escapeMarkdown(query['videoDetails'].title)),
-					author: query['videoDetails']['ownerChannelName'],
-					bitrate: channel.bitrate
-				}
-
-			}
-
-			console.log(song)*/
-
-			// YTSR Search
-
 				const data = await searchYT(args.join(' ').trim(), {
 					limit: 1
 				})
 
 				const query = data[0]
 
-				if (query['videoDetails'] == null) {
-
-					playlist = false
-
-					const dataAPI = await Youtube.searchVideos(args.join(' ').trim(), 1)
-
-					const queryAPI = await ytdl.getBasicInfo(dataAPI[0].url)
-
-					song = {
-						id: queryAPI['videoDetails'].videoId,
-						url: queryAPI['videoDetails'].video_url,
-						title: Util.escapeMarkdown(queryAPI['videoDetails'].title),
-						thumbnail: queryAPI['videoDetails'].thumbnails[3].url,
-						length: queryAPI['videoDetails'].lengthSeconds,
-						seconds: parseInt(queryAPI['videoDetails'].lengthSeconds),
-						views: queryAPI['videoDetails'].viewCount,
-						shortTitle: shortenTitle(Util.escapeMarkdown(queryAPI['videoDetails'].title)),
-						author: queryAPI['videoDetails']['ownerChannelName'],
-						bitrate: channel.bitrate
-					}
-
-					console.log(song)
-
-				} else {
-
-					// Youtube URL
-
-					song = {
-						id: query['title'],
-						url: query['link'],
-						title: Util.escapeMarkdown(query['title']),
-						thumbnail: query['bestThumbnail'].url,
-						length: toSeconds(query['duration']).toString(),
-						seconds: toSeconds(query['duration']),
-						views: query['views'],
-						shortTitle: shortenTitle(Util.escapeMarkdown(query['title'])),
-						author: query['author']['name'],
-						bitrate: channel.bitrate
-					}
-
+				song = {
+					id: query['title'],
+					url: query['url'],
+					title: Util.escapeMarkdown(query['title']),
+					thumbnail: query['bestThumbnail'].url,
+					length: toSeconds(query['duration']).toString(),
+					seconds: toSeconds(query['duration']),
+					views: query['views'],
+					shortTitle: shortenTitle(Util.escapeMarkdown(query['title'])),
+					author: query['author']['name'],
+					bitrate: channel.bitrate
 				}
 
 			}
 
 		} catch (err) {
-
-			console.log(err)
 			
 			const song_unavaliable = new MessageEmbed()
 			.setTitle('Song Is Unavaliable')
@@ -386,7 +316,7 @@ module.exports = {
 
 			const queue = message.client.queue.get(message.author.id)
 
-			if (!song) {
+			if (!song.url) {
 
 				queue.voiceChannel.leave()
 
@@ -396,7 +326,7 @@ module.exports = {
 
 			}
 
-			queue.stream = await ytdlOpus(song.url, { quality: 'highestaudio', filter: 'audioonly', highWaterMark: 1 << 25 })
+			queue.stream = await ytdlOpus(song.url, { quality: 'lowestaudio', filter: 'audioonly', highWaterMark: 1 << 25 })
 
 			queue.current = Date.now()
 
@@ -534,7 +464,7 @@ module.exports = {
 
 			play(queueConstruct.songs[queueConstruct['location']])
 
-		} catch {
+		} catch (err) {
 
 			message.client.queue.delete(message.author.id)
 
@@ -552,7 +482,7 @@ module.exports = {
 
 		}
 
-			} catch {
+			} catch (err) {
 
 				const Unavaliable = new MessageEmbed()
 		.setTitle('Something Happened.')

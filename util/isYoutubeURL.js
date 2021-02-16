@@ -8,7 +8,7 @@ const createCode = (url) => {
 
         return true
 
-    } catch {
+    } catch (err) {
 
         return false
 

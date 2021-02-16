@@ -6,17 +6,15 @@ module.exports = {
 	aliases: ['r'],
 	guildOnly: true,
 	cooldown: 5,
-	execute(message) {
+	async execute(message, args) {
 
-try {
+	try {
 
 		const userQueue = message.client.queue.get(message.author.id)
 
 		if (userQueue && userQueue.playing === false) {
 
 			userQueue.connection.dispatcher.resume()
-
-			console.log('resume')
 
 			userQueue.playing = true
 
@@ -42,9 +40,9 @@ try {
 
 		return
 
-			} catch {
+	} catch (err) {
 
-				const Unavaliable = new MessageEmbed()
+		const Unavaliable = new MessageEmbed()
 		.setTitle('Something Happened.')
 		.setColor('#31A5A5')
 		.setTimestamp()

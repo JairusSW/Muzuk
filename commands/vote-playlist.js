@@ -8,21 +8,17 @@ const isCode = require('../util/isCode')
 
 const nameToCode = require('../util/nameToCode')
 
-const codeToName = require('../util/codeToName')
-
 const ms = require('ms')
-
-//const codeToQueue = require('../util/codeToQueue')
 
 module.exports = {
 	name: 'vote-playlist',
 	description: 'Upvote Playlist.',
 	aliases: ['vote', 'vote-queue'],
 	guildOnly: true,
-	cooldown: ms('1d') / 1000,
+	cooldown: ms('1h') / 1000,
 	async execute(message, args) {
 
-try {
+	try {
 
 		const user = message.client.userDatabase
 
@@ -45,8 +41,6 @@ try {
 		try {
 
 			if (!isCode(code)) code = await nameToCode(code.toLowerCase(), musicData)
-
-			console.log(code)
 
 			code = code.toLowerCase()
 
@@ -107,8 +101,6 @@ try {
 
 		} catch (err) {
 
-			console.log(err)
-
 			const PlaylistKill = new MessageEmbed()
 			.setTitle(`Could Not Find Playlist`)
 			.setColor('#31A5A5')
@@ -121,7 +113,7 @@ try {
 
 		}
 
-			} catch {
+			} catch (err) {
 
 				const Unavaliable = new MessageEmbed()
 				.setTitle('Something Happened.')

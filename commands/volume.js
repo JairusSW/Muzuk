@@ -6,9 +6,9 @@ module.exports = {
 	aliases: ['v', 'vol'],
 	guildOnly: true,
 	cooldown: 5,
-	execute(message, args) {
+	async execute(message, args) {
 
-try {
+	try {
 
 		const { channel } = message.member.voice
 
@@ -110,7 +110,7 @@ try {
 
 		})
 
-	} catch {
+	} catch (err) {
 
 				const Unavaliable = new MessageEmbed()
 		.setTitle('Something Happened.')

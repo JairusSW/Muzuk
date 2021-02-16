@@ -1,28 +1,32 @@
 const { Client, Collection } = require('discord.js')
 
-const ReziDB = require('./database')
+const Air5 = require('air5')
+
+const database = new Air5('Muzuk', {
+	provider: 'RocksDB'
+})
 
 require('dotenv').config()
 
-module.exports = class extends Client {
-	constructor(config) {
-		super({
-			disableMentions: 'everyone'
-		})
+class MuzukClient extends Client {
+	constructor(options) {
+		super(options)
 
 		this.commands = new Collection()
 
 		this.cooldowns = new Collection()
+
+		this.prefix = process.env.prefix
 		
 		this.queue = new Map()
 
-		this.config = config
+		this.config = process.env
 
-		this.youtubeKeys = JSON.parse(process.env.ytKeys)
+		this.userDatabase = database
 
-		this.userDatabase = ReziDB.userDatabase
-
-		this.musicDatabase = ReziDB.musicDatabase
+		this.musicDatabase = database
 		
 	}
 }
+
+module.exports = MuzukClient

@@ -8,7 +8,7 @@ module.exports = {
 	aliases: ['playlists', 'my', 'my-playlists'],
 	guildOnly: true,
 	cooldown: 3,
-	async execute(message) {
+	async execute(message, args) {
 
     try {
 
@@ -26,50 +26,46 @@ module.exports = {
 
 		}
 
-    const userData = await user.get(message.author.id)
+    	const userData = await user.get(message.author.id)
 		
 		const musicData = message.client.musicDatabase
 
 		try {
 
-					if (userData.playlists.length <= 0) {
+			if (userData.playlists.length <= 0) {
 
-							const noPlaylist = new MessageEmbed()
-							.setTitle(`No Playlists`)
-							.setColor('#31A5A5')
-							.setTimestamp()
-							.setFooter(message.author.username)
-                
-			    		await message.channel.send(noPlaylist)
+				const noPlaylist = new MessageEmbed()
+				.setTitle(`No Playlists`)
+				.setColor('#31A5A5')
+				.setTimestamp()
+				.setFooter(message.author.username)
+		
+				await message.channel.send(noPlaylist)
 
-              return
+              	return
 
             }
 			
-						const Playlist = new MessageEmbed()
-						.setTitle(`${message.author.username} - Playlists`)
-						.setThumbnail(userData.avatar)
-						.setColor('#31A5A5')
-						.setTimestamp()
-						.setFooter(message.author.username)
+			const Playlist = new MessageEmbed()
+			.setTitle(`${message.author.username} - Playlists`)
+			.setThumbnail(userData.avatar)
+			.setColor('#31A5A5')
+			.setTimestamp()
+			.setFooter(message.author.username)
 
             let index = 0
 
             for (const code of userData.playlists) {
 
-                console.log(code)
-
                 const songData = await musicData.get(code.toLowerCase())
 
-								console.log(songData)
+				let title = ''
 
-								let title = ''
+				songData.title.split(' ').forEach((i) => {
 
-								songData.title.split(' ').forEach((i) => {
-
-									title += `${toProperCase(i)} `
-									
-								})
+					title += `${toProperCase(i)} `
+					
+				})
 
                 Playlist.addField(`${index + 1}. ${title}`, code)
 
@@ -83,8 +79,6 @@ module.exports = {
 
 		} catch (err) {
 
-			console.log(err)
-
 			const PlaylistKill = new MessageEmbed()
 			.setTitle(`Could Not Find Playlists`)
 			.setColor('#31A5A5')
@@ -97,7 +91,7 @@ module.exports = {
 
 		}
 			
-		} catch {
+		} catch (err) {
 
 		const Unavaliable = new MessageEmbed()
 		.setTitle('Something Happened.')
