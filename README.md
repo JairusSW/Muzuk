@@ -28,9 +28,8 @@
 #### Example .env
 
 ```
-DISCORD_TOKEN=
-DISCORD_PREFIX=
-DISCORD_ID=
+token=
+prefix=
 ```
 
 ## Commands

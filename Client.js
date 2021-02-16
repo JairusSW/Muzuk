@@ -20,8 +20,6 @@ class MuzukClient extends Client {
 		
 		this.queue = new Map()
 
-		this.config = process.env
-
 		this.userDatabase = database
 
 		this.musicDatabase = database
