@@ -3,7 +3,7 @@ const { Client, Collection } = require('discord.js')
 const Air5 = require('air5')
 
 const database = new Air5('Muzuk', {
-	provider: 'RocksDB'
+	provider: 'LevelDB'
 })
 
 require('dotenv').config()
