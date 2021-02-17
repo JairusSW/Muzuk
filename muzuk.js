@@ -18,6 +18,8 @@ const needle = require('needle')
 
 const { Collection, MessageEmbed, MessageAttachment } = require('discord.js')
 
+const { promisify } = require('util')
+
 const client = new MusicClient()
 
 const commandFiles = readdirSync(join(__dirname, 'commands')).filter(file => file.endsWith('.js'))
@@ -491,10 +493,16 @@ const http = require('http')
 
 const server = http.createServer((req, res) => {
 
-  res.writeHead(200)
+res.writeHead(200)
 
-  res.end('ok')
-  
+res.end('ok')
+
+})
+
+server.on('error', () => {
+
+	return
+
 })
 
 server.listen(3000)
