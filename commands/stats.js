@@ -11,7 +11,7 @@ module.exports = {
 
         const embed = new MessageEmbed()
         .setTitle(`Stats`)
-        .addField('Name: ', format(message.client.user.username))
+        .addField('Name: ', message.client.user.username)
         .addField('Servers:', format(message.client.guilds.cache.size))
         .addField('Users: ', format(message.client.guilds.cache.reduce((a, g) => a + g.memberCount, 0)))
         .addField('Owner: ', 'JairusSW#3022')
