@@ -79,6 +79,8 @@ module.exports = {
 
 			} catch (err) {
 
+				console.log(err)
+
 				const full_channel = new MessageEmbed()
 				.setTitle('Channel Is Full. Select A Different Channel.')
 				.setColor('#31A5A5')
@@ -223,7 +225,7 @@ module.exports = {
 				const query = data[0]
 
 				song = {
-					id: query['title'],
+					id: query['id'],
 					url: query['url'],
 					title: Util.escapeMarkdown(query['title']),
 					thumbnail: query['bestThumbnail'].url,
@@ -238,6 +240,8 @@ module.exports = {
 			}
 
 		} catch (err) {
+
+			console.log(err)
 			
 			const song_unavaliable = new MessageEmbed()
 			.setTitle('Song Is Unavaliable')
@@ -466,6 +470,8 @@ module.exports = {
 
 		} catch (err) {
 
+			console.log(err)
+
 			message.client.queue.delete(message.author.id)
 
 			await channel.leave()
@@ -484,13 +490,15 @@ module.exports = {
 
 			} catch (err) {
 
-				const Unavaliable = new MessageEmbed()
-		.setTitle('Something Happened.')
-		.setColor('#31A5A5')
-		.setTimestamp()
-		.setFooter(message.author.username)
+				console.log(err)
 
-		message.channel.send(Unavaliable)
+				const Unavaliable = new MessageEmbed()
+				.setTitle('Something Happened.')
+				.setColor('#31A5A5')
+				.setTimestamp()
+				.setFooter(message.author.username)
+
+				message.channel.send(Unavaliable)
 
 	}
 	

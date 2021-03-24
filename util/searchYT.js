@@ -5,7 +5,8 @@ const searchYoutube = async (query, options = {
 }) => {
 
     const result = await ytsr(query, {
-        limit: options.limit || 5
+        limit: options.limit || 5,
+				safeSearch: true
     })
 
     return result['items']
