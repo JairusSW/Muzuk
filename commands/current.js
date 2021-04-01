@@ -41,7 +41,7 @@ module.exports = {
 		.addField(`Views `, `${formatViews(song.views)}`)
 		.addField(`ID `, `${song.id}`, true)
 		.addField(`Position `, `[${songLength((Date.now() - userQueue.current) / 1000)}/${songLength(song.length)}]`)
-		.setImage(`${song.thumbnail}`)
+		.setThumbnail(`${song.thumbnail}`)
 		.setColor('#31A5A5')
 		.setTimestamp()
 		.setFooter(message.author.username)

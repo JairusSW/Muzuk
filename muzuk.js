@@ -55,7 +55,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
 
 		if (reaction.emoji.name) {
 
-			const emojis = ['▶', '⏸', '⏪', '⏩', '🔄', '🔀', '⬇', '🔊', '🔉', '🔈']
+			const emojis = ['▶', '⏸', '⏪', '⏩', '🔄', '🔀', '🔊', '🔉', '🔈']
 
 			if (emojis.includes(reaction.emoji.name)) {
 
@@ -261,81 +261,6 @@ client.on('messageReactionAdd', async (reaction, user) => {
 
 						userQueue.connection.dispatcher.setVolumeLogarithmic(0 / 5)
 						
-					}
-
-					song = userQueue.songs[userQueue.location]
-
-					controlPanelEdit = new MessageEmbed()
-					.setTitle(`Song Dashboard`)
-					.addField(`Pause`, `${userQueue.playing ? 'Off' : 'On'}`)
-					.addField(`Loop`, `${userQueue.loop ? 'On' : 'Off'}`)
-					.addField(`Shuffle`, `${userQueue.shuffle ? 'On' : 'Off'}`)
-					.addField(`Volume`, `${userQueue.volume * 10}`)
-          			.addField(`Position `, `[${songLength((Date.now() - userQueue.current) / 1000)}/${songLength(song.length)}]`)
-					.setThumbnail(`${song.thumbnail}`)
-					.setColor('#31A5A5')
-					.setFooter(`----------------------------------------------------------------------------------------------`)
-
-					reaction.message.edit(controlPanelEdit)
-
-				}
-
-				if (reaction.emoji.name === '⬇') {
-
-					try {
-
-						const current = userQueue.songs[userQueue['location']]
-
-						const maxMinutes = 5
-
-						if (current.seconds > maxMinutes * 60) {
-		
-							const tooLong = new MessageEmbed()
-							.setTitle(`Song Is Too Long. Please Keep It Below ${maxMinutes} Minutes.`)
-							.setColor('#31A5A5')
-							.setTimestamp()
-							.setFooter(reaction.message.author.username)
-		
-							await reaction.message.channel.send(tooLong)
-		
-							return
-		
-						}
-
-						const link = (await needle('get', `https://ytdl.jairussw.repl.co/download?url=${current.url}/`)).body
-
-						if (link === '401') {
-							
-							const noSongi = new MessageEmbed()
-							.setTitle('Song Unavaliable')
-							.setColor('#31A5A5')
-							.setTimestamp()
-							.setFooter(reaction.message.author.username)
-
-							message.channel.send(noSongi)
-
-							return
-
-						}
-						
-						const ReadyURL = new MessageAttachment(link, `${current.title}.mp3`.replace(' ', '-'))
-			
-						reaction.message.channel.send(ReadyURL)
-
-						return
-
-					} catch (err) {
-
-						console.log(err)
-			
-						const Unavaliable = new MessageEmbed()
-						.setTitle('Song Unavaliable')
-						.setColor('#31A5A5')
-						.setTimestamp()
-						.setFooter(user.username)
-			
-						user.dmChannel.send(Unavaliable)
-			
 					}
 
 					song = userQueue.songs[userQueue.location]

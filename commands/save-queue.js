@@ -94,7 +94,7 @@ module.exports = {
 			.addField('Name', toProperCase(name))
 			.addField('Songs', userQueue.songs.length)
 			.addField('Share', shareCode)
-			.setImage(userQueue['songs'][0].thumbnail)
+			.setThumbnail(userQueue['songs'][0].thumbnail)
 			.setColor('#31A5A5')
 			.setTimestamp()
 			.setFooter(message.author.username)

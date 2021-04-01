@@ -394,7 +394,7 @@ module.exports = {
 					.addField(`Views `, `${formatViews(currentSong.views)}`)
 					.addField(`ID `, `${currentSong.id}`)
 					.addField(`Position `, `[0:00/${songLength(song.length)}]`)
-					.setImage(`${currentSong.thumbnail}`)
+					.setThumbnail(`${currentSong.thumbnail}`)
 					.setColor('#31A5A5')
 					.setTimestamp()
 					.setFooter(message.author.username)
@@ -421,7 +421,7 @@ module.exports = {
 				.addField(`Views `, `${formatViews(song.views)}`)
 				.addField(`ID `, `${song.id}`)
 				.addField(`Position `, `[0:00/${songLength(song.length)}]`)
-				.setImage(`${song.thumbnail}`)
+				.setThumbnail(`${song.thumbnail}`)
 				.setColor('#31A5A5')
 				.setTimestamp()
 				.setFooter(message.author.username)
@@ -450,8 +450,7 @@ module.exports = {
 					control.react('🔀'),
 					control.react('🔊'),
 					control.react('🔉'),
-					control.react('🔈'),
-					control.react('⬇')
+					control.react('🔈')
 				])
 
 			}
